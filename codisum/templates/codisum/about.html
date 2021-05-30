@@ -1,0 +1,38 @@
+{% extends "codisum/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+	<div id="navstrip">
+		<div class="navbox">
+			<div class="option">
+				<a href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i>
+				<span>Home</span></a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1 col-lg-2 col-xl-2 col-sm-1 col-1"></div>
+		<div class="col-md-10 col-lg-8 col-xl-8 col-sm-10 col-10">
+			<h1>About</h1>
+			<br>
+			<h5>This is a commit message generator which allows you to generate commit message for code diff. Copy the code diff and paste it into the text area, click the generate button and boom! the text is translated. Right now it can only support Java projects.</h5>
+			<br>
+			<h2>Powered By <a href="https://keras.io" target="_blank"><img src="{% static 'codisum/keras-logo.png' %}" class="logo"></a></h2>
+			<h5>This application uses <a href="https://keras.io" target="_blank">Keras</a> at the back-end for commit message generation and is built using <a href="https://www.djangoproject.com/" target="_blank">Django</a>.</h5>
+			<br>
+			<div class="contact">
+				<div class="option">
+					<a href="https://github.com/KingGoldXu" target="_blank">
+					<i class="fa fa-github" aria-hidden="true"></i><span>Github</span></a>
+				</div>
+				<div class="option">
+					<a href="mailto:%20kingxu@smail.nju.edu.cn" target="_blank">
+					<i class="fa fa-envelope" aria-hidden="true"></i><span>Email</span></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1 col-lg-2 col-xl-2 col-sm-1 col-1"></div>
+	</div>	
+{% endblock %}

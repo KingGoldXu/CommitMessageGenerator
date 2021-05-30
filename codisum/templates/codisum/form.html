@@ -1,0 +1,49 @@
+{% extends "codisum/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+	<div id="navstrip">
+		<div class="navbox">
+			<div class="option">
+				<a href="{% url 'about' %}"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+				<span>About</span></a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1 col-lg-3 col-xl-3 col-sm-1 col-1"></div>
+		<div class="col-md-10 col-lg-6 col-xl-6 col-sm-10 col-10">
+			<h1>Commit Message Generation</h1>
+			<br><br>
+			<form method="POST">
+			    {% csrf_token %}
+			    <div class="form-group">
+			        <label for="text">Text</label>
+			        <textarea name="text" class="form-control" id="text" autofocus="true" required >{{ text }}</textarea>
+			    </div>
+			    <div class="row">
+					<div class="col-xl-2 col-lg-2 butn"><button type="submit" class="btn btn-dark">Generate</button></div>
+				</div>
+			</form><br>
+			{% if messages %}
+				<center><div class="alert alert-light" style="max-width: 500px;">
+					{% for message in messages %}
+						<p align="center">{{ message }}</p>
+					{% endfor %}
+				</div></center>
+			{% endif %}
+			{% for i, j in res_dict.items %}
+				<div class="row col-xl-12 col-lg-12">
+					<div class="card card-body">
+						<p align="left">{{ i }}</p>
+					</div>
+					<p>{{ j }}</p>
+				</div><br>
+			{% endfor %}
+		</div>
+		<div class="col-md-1 col-lg-3 col-xl-3 col-sm-1 col-1"></div>
+	</div>
+
+{% endblock %}
