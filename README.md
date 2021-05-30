@@ -8,4 +8,4 @@ A demo which can generate commit message for java diff.
 * Tensorflow >= 1.7.0
 * Django >= 3.2.2
 * nltk >= 3.5
-* Pygment >= 2.5.2
+* Pygments >= 2.5.2
