@@ -4,8 +4,12 @@ import pickle
 import numpy as np
 from django.contrib import messages
 from django.shortcuts import render
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .forms import TextLangForm
+from .serializers import DiffSerializer, MsgSerializer
 from .tf_model.config import conf
 from .tf_model.data import Vocabulary, data2model, process_text, read_data
 from .tf_model.model import CoDiSumModel
@@ -67,7 +71,7 @@ def beam_decode_step(decoder, inputs, beam_size):
 def predict_multi_sentence(encoder, decoder, vocab, lines, marks):
     mark, word, var = data2model(lines, marks)
     d = vocab.encode_diff(mark, word, var, conf.max_code,
-                          conf.attr_num, conf.max_msg)
+                          conf.attr_num)
     en_r = encoder.predict(list(d))
     cur_token = np.zeros((1, 1))
     cur_token[0, 0] = 1
@@ -83,6 +87,23 @@ def predict_multi_sentence(encoder, decoder, vocab, lines, marks):
 
 # 必须在启动前调用一次predict，不然会报错
 predict_multi_sentence(encoder, decoder, vocab, a, b)
+
+
+class GenerateMsgs(APIView):
+    def post(self, request, format=None):
+        diff = DiffSerializer(data=request.data)
+        if diff.is_valid():
+            text = diff.validated_data['diff']
+            a, b = process_text(text)
+            if a:
+                res = predict_multi_sentence(encoder, decoder, vocab, a, b)
+                msgs = []
+                for i, j in res.items():
+                    msgs.append({'msg': i, 'score': j})
+                ser = MsgSerializer(msgs, many=True)
+                return Response(ser.data, status=status.HTTP_200_OK)
+            return Response(diff.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(diff.errors, status=status.HTTP_204_NO_CONTENT)
 
 
 def generated(request):

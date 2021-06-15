@@ -295,7 +295,7 @@ class Vocabulary():
                 self.tok2id[tok] = self.idx
                 self.idx += 1
 
-    def encode_diff(self, mark, word, var, max_code, max_attr, max_msg):
+    def encode_diff(self, mark, word, var, max_code, max_attr):
         d_mark = np.zeros([1, max_code], dtype=np.int)
         d_word = np.zeros([1, max_code], dtype=np.int)
         d_attr = np.zeros([1, max_code, max_attr], dtype=np.int)
